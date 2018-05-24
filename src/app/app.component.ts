@@ -52,8 +52,9 @@ export class AppComponent {
   	// console.log(this.reservedSeats);
   }
 
-  bookTickets(number : number){
-  	console.log(number);
+  bookTickets(numberic : string){
+    var number = parseInt(numberic);
+  	// console.log(typeof number);
   	if(number > this.ticketsRemaining){
   		alert('All booked!');
   	}
@@ -68,18 +69,30 @@ export class AppComponent {
             }
         }
 
-        var availSeats = 0;
+        // var availSeats = 0;
         var num = number ;
         for(var i =0 ; i<this.rowsNum; i++ ){
-          availSeats += this.booking[i].availSeats;
-            if(availSeats < num){
+          // availSeats += this.booking[i].availSeats;
+            if(this.booking[i].bookedSeats < this.booking[i].totalSeats){
+              console.log(this.booking[i]);
               let avail = this.booking[i].availSeats ;
-              this.booking[i].availSeats = this.booking[i].availSeats - avail ;
-              this.booking[i].bookedSeats = this.booking[i].bookedSeats + avail ;
-              num = num - avail ;
+              var temp = avail % num ;
+              if(avail > num){
+                this.booking[i].availSeats = this.booking[i].availSeats - num ;
+                this.booking[i].bookedSeats = this.booking[i].bookedSeats + num ;
+                num = 0 ;
+            }else if (avail < num){
+                this.booking[i].availSeats = this.booking[i].availSeats - avail ;
+                this.booking[i].bookedSeats = this.booking[i].bookedSeats + avail ;
+                num = num - avail ;              
             }
-            console.log(this.booking);
-            return ;
+              console.log(num);
+
+                if(num <= 0){
+                  console.log(this.booking);
+                  return ;
+                }              
+            }
         }
     }
   	// console.log(this.booking);
